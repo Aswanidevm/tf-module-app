@@ -3,8 +3,7 @@ resource "aws_iam_policy" "policy" {
   path = "/"
   description = "${var.component}-${var.env}-ssm-policy"
 
-  policy = jsonencode 
-  {{
+  policy = jsonencode {{
     "Version": "2012-10-17",
     "Statement": [
         {

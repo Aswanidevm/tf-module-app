@@ -70,3 +70,14 @@ resource "aws_security_group" "sg" {
     Name = "${var.env}-${var.component}-sg"
   }
 }
+
+
+resource "aws_instance" "ec2" {
+   ami           = data.aws_ami.ami.id
+  instance_type = "t2.small"
+  vpc_security_group_ids = [aws_security_group.sg.id]
+  tags = {
+    Name = "${var.env}-${var.component}"
+  }
+
+}

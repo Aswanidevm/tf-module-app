@@ -30,7 +30,7 @@ resource "aws_iam_policy" "policy" {
 resource "aws_iam_role" "test_role" {
   name = "${var.component}-${var.env}-ec2-role"
 
-  assume_role_policy = josonencode{{
+  assume_role_policy = josonencode ({
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -41,7 +41,7 @@ resource "aws_iam_role" "test_role" {
             "Action": "sts:AssumeRole"
         }
     ]
-}}
+})
 
 }
 

@@ -27,7 +27,7 @@ resource "aws_iam_policy" "policy" {
 })
 }
 
-resource "aws_iam_role" "test_role" {
+resource "aws_iam_role" "role" {
   name = "${var.component}-${var.env}-ec2-role"
 
   assume_role_policy = jsonencode ({
@@ -43,6 +43,11 @@ resource "aws_iam_role" "test_role" {
     ]
 })
 
+}
+
+resource "aws_iam_instance_profile" "instance_profile" {
+  name = "${var.component}-${var.env}-ec2-role"
+  role = aws_iam_role.role.name
 }
 
 resource "aws_security_group" "sg" {
@@ -76,8 +81,36 @@ resource "aws_instance" "ec2" {
    ami           = data.aws_ami.ami.id
   instance_type = "t2.small"
   vpc_security_group_ids = [aws_security_group.sg.id]
+  iam_instance_profileiam_instance_profile = aws_iam_instance_profile.instance_profile.name
   tags = {
     Name = "${var.component}-${var.env}-"
   }
 
+}
+
+resource "aws_route53_record" "dns" {
+  zone_id = "Z04818282BOE8RVGV13K7"
+  name    = "${var.component}.myprojecdevops.info"
+  type    = "A"
+  ttl     = "300"
+  records = [aws_instance.ec2.private_ip]
+}
+
+resource "null_resource" "ansible"{
+  depends_on = [ aws_instance.ec2, aws_route53_record.dns]
+  provisioner "remote-exec" {
+
+  connection {
+    type     = "ssh"
+    user     = "centos"
+    password = "DevOps321"
+    host     = aws_instance.ec2.public_ip
+  }
+
+  
+    inline = [
+     "sudo labauto ansible",
+     "ansible-pull -i localhost, -U https://github.com/Aswanidevm/Devops/tree/f180152498705703a9801143a55ee8b4533d780a/ansible main.yml",
+    ]
+  }
 }

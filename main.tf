@@ -115,7 +115,7 @@ resource "null_resource" "ansible"{
   
     inline = [
      "sudo labauto ansible",
-     "ansible-pull -i localhost, -U https://github.com/Aswanidevm/Devops/tree/f180152498705703a9801143a55ee8b4533d780a/ansible main.yml",
+     "ansible-pull -i localhost, -U https://github.com/Aswanidevm/Devops/tree/f180152498705703a9801143a55ee8b4533d780a/ansible main.yml -e role_name=${component} -e env=${env}",
     ]
   }
 }

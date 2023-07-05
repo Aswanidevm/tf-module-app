@@ -15,7 +15,7 @@ resource "aws_iam_policy" "policy" {
                 "ssm:GetParameters",
                 "ssm:GetParameter"
             ],
-            "Resource": "arn:aws:ssm:us-east-1:124430735972:parameter/roboshop.${var.env}.${var.component}*"
+            "Resource": "arn:aws:ssm:us-east-1:124430735972:parameter/roboshop.${var.component}-${var.env}.*"
         },
         {
             "Sid": "VisualEditor1",
@@ -46,7 +46,7 @@ resource "aws_iam_role" "test_role" {
 }
 
 resource "aws_security_group" "sg" {
-  name        = "${var.env}-${var.component}-sg"
+  name        = "${var.component}-${var.env}-sg"
   description = "Allow TLS inbound traffic"
 
 
@@ -67,7 +67,7 @@ resource "aws_security_group" "sg" {
   }
 
   tags = {
-    Name = "${var.env}-${var.component}-sg"
+    Name = "${var.component}-${var.env}--sg"
   }
 }
 
@@ -77,7 +77,7 @@ resource "aws_instance" "ec2" {
   instance_type = "t2.small"
   vpc_security_group_ids = [aws_security_group.sg.id]
   tags = {
-    Name = "${var.env}-${var.component}"
+    Name = "${var.component}-${var.env}-"
   }
 
 }

@@ -72,7 +72,7 @@ resource "aws_security_group" "sg" {
   }
 
   tags = {
-    Name = "${var.component}-${var.env}--sg"
+    Name = "${var.component}-${var.env}-sg"
   }
 }
 
@@ -83,7 +83,7 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids = [aws_security_group.sg.id]
   iam_instance_profile = aws_iam_instance_profile.instance_profile.name
   tags = {
-    Name = "${var.component}-${var.env}-"
+    Name = "${var.component}-${var.env}"
   }
 
 }

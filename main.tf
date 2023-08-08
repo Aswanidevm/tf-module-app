@@ -93,7 +93,7 @@ resource "aws_instance" "ec2" {
 
 }
 
-resource "aws_route53_record" "dns" {
+resource "aws_route53_record" "www" {
   zone_id = "Z04818282BOE8RVGV13K7"
   name    = "${var.component}.myprojecdevops.info"
   type    = "A"
@@ -102,7 +102,7 @@ resource "aws_route53_record" "dns" {
 }
 
 resource "null_resource" "ansible"{
-  depends_on = [ aws_instance.ec2, aws_route53_record.dns]
+  depends_on = [ aws_instance.ec2, aws_route53_record.www]
   provisioner "remote-exec" {
 
   connection {
@@ -120,3 +120,6 @@ resource "null_resource" "ansible"{
     ]
   }
 }
+
+
+

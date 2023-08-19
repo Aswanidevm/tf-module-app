@@ -133,7 +133,7 @@ resource "aws_instance" "test" {
 resource "aws_security_group" "sg" {
   name        = "test-${var.env}-sg"
   description = "test-${var.env}-sg"
-
+  vpc_id = var.vpc_id
 
   ingress {
     description      = "TLS from VPC"
